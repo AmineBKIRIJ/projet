@@ -1,0 +1,232 @@
+/* Reset et styles de base */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    min-height: 100vh;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Styles du carrousel d'arrière-plan */
+.background-slider {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+}
+
+.slide {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    transition: opacity 1s ease-in-out;
+}
+
+.slide.active {
+    opacity: 1;
+}
+
+.slide img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Conteneur d'authentification */
+.auth-container {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+    position: relative;
+    z-index: 1;
+}
+
+.auth-content {
+    background-color: rgba(255, 255, 255, 0.95);
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 500px;
+    animation: fadeIn 0.5s ease-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Titre de bienvenue */
+.welcome-title {
+    text-align: center;
+    color: #007bff;
+    font-size: 2rem;
+    margin-bottom: 2rem;
+    font-weight: 600;
+}
+
+/* Sections d'authentification */
+.auth-section {
+    animation: slideIn 0.5s ease-out;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateX(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.auth-section h2 {
+    color: #333;
+    margin-bottom: 1.5rem;
+    font-size: 1.5rem;
+    text-align: center;
+}
+
+/* Formulaires */
+.form-group {
+    position: relative;
+    margin-bottom: 1.5rem;
+}
+
+.form-group i {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #666;
+}
+
+.form-group input,
+.form-group select {
+    width: 100%;
+    padding: 12px 15px 12px 45px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 1rem;
+    transition: border-color 0.3s ease;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+    border-color: #007bff;
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+}
+
+/* Boutons */
+.auth-btn {
+    width: 100%;
+    padding: 12px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.auth-btn:hover {
+    background-color: #0056b3;
+}
+
+/* Liens de basculement */
+.switch-text {
+    text-align: center;
+    margin-top: 1rem;
+}
+
+.switch-text a {
+    color: #007bff;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.switch-text a:hover {
+    text-decoration: underline;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .auth-content {
+        padding: 2rem;
+        margin: 1rem;
+    }
+
+    .welcome-title {
+        font-size: 1.75rem;
+    }
+}
+
+/* Animation du carrousel */
+@keyframes slideShow {
+    0% { opacity: 0; }
+    10% { opacity: 1; }
+    30% { opacity: 1; }
+    40% { opacity: 0; }
+    100% { opacity: 0; }
+}
+
+.slide:nth-child(1) { animation: slideShow 20s infinite; }
+.slide:nth-child(2) { animation: slideShow 20s infinite 5s; }
+.slide:nth-child(3) { animation: slideShow 20s infinite 10s; }
+.slide:nth-child(4) { animation: slideShow 20s infinite 15s; }
+
+/* Messages de succès et d'erreur */
+.success-message,
+.error-message {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 15px 30px;
+    border-radius: 5px;
+    color: white;
+    font-weight: 500;
+    z-index: 1000;
+    animation: slideDown 0.3s ease-out;
+}
+
+.success-message {
+    background-color: #28a745;
+}
+
+.error-message {
+    background-color: #dc3545;
+}
+
+@keyframes slideDown {
+    from {
+        transform: translate(-50%, -100%);
+        opacity: 0;
+    }
+    to {
+        transform: translate(-50%, 0);
+        opacity: 1;
+    }
+} 

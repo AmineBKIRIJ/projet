@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Authentification</title>
+    <link rel="stylesheet" href="static/auth.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="background-slider">
+        <div class="slide active">
+            <img src="https://images.unsplash.com/photo-1523050854058-8df90110c9f1?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80" alt="Campus Life">
+        </div>
+        <div class="slide">
+            <img src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80" alt="Student Life">
+        </div>
+        <div class="slide">
+            <img src="https://images.unsplash.com/photo-1541339907198-e08756dedf3f?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80" alt="Campus Events">
+        </div>
+        <div class="slide">
+            <img src="image/481989687_638153805829158_7958104089730506350_n.jpg" alt="INPT Image 1">
+        </div>
+        <div class="slide">
+            <img src="image/483831419_3934896720091247_7188098502155344217_n (1).jpg" alt="INPT Image 2">
+        </div>
+    </div>
+
+    <div class="auth-container">
+        <div class="auth-content">
+            <h1 class="welcome-title">Welcome to Campus Event</h1>
+            <div id="loginSection" class="auth-section">
+                <h2>Connexion</h2>
+                <form id="loginForm">
+                    <div class="form-group">
+                        <i class="fas fa-envelope"></i>
+                        <input type="email" id="email" placeholder="Email" required>
+                    </div>
+                    <div class="form-group">
+                        <i class="fas fa-lock"></i>
+                        <input type="password" id="password" placeholder="Mot de passe" required>
+                    </div>
+                    <button type="submit" class="auth-btn">Se connecter</button>
+                </form>
+                <p class="switch-text">Pas de compte ? <a href="#" id="showRegister">Inscrivez-vous</a></p>
+            </div>
+
+            <div id="registerSection" class="auth-section" style="display:none;">
+                <h2>Inscription</h2>
+                <form id="registerForm">
+                    <div class="form-group">
+                        <i class="fas fa-user"></i>
+                        <input type="text" id="nom" placeholder="Nom" required>
+                    </div>
+                    <div class="form-group">
+                        <i class="fas fa-user"></i>
+                        <input type="text" id="prenom" placeholder="Prénom" required>
+                    </div>
+                    <div class="form-group">
+                        <i class="fas fa-graduation-cap"></i>
+                        <select id="niveau" required>
+                            <option value="">Sélectionnez votre niveau</option>
+                            <option value="INE1">INE1</option>
+                            <option value="INE2">INE2</option>
+                            <option value="INE3">INE3</option>
+                            <option value="laureat">Lauréat</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <i class="fas fa-book"></i>
+                        <select id="filiere" required>
+                            <option value="">Sélectionnez votre filière</option>
+                            <option value="SESNUM">SESNUM</option>
+                            <option value="ASEDS">ASEDS</option>
+                            <option value="Smart-ICT">Smart-ICT</option>
+                            <option value="ICCN">ICCN</option>
+                            <option value="DATA">DATA</option>
+                            <option value="AMOA">AMOA</option>
+                            <option value="CLOUD">CLOUD</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <i class="fas fa-envelope"></i>
+                        <input type="email" id="registerEmail" placeholder="Email" required>
+                    </div>
+                    <div class="form-group">
+                        <i class="fas fa-lock"></i>
+                        <input type="password" id="registerPassword" placeholder="Mot de passe" required>
+                    </div>
+                    <button type="submit" class="auth-btn">S'inscrire</button>
+                </form>
+                <p class="switch-text">Déjà un compte ? <a href="#" id="showLogin">Se connecter</a></p>
+            </div>
+        </div>
+    </div>
+
+    <script src="static/auth.js"></script>
+</body>
+</html> 

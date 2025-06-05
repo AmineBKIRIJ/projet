@@ -1,0 +1,61 @@
+.participate-btn.participated {
+    background-color: #6c757d;
+    color: white;
+    cursor: not-allowed;
+    opacity: 0.8;
+}
+
+.participate-btn.participated:hover {
+    background-color: #6c757d;
+    transform: none;
+}
+
+.event-btn.primary {
+    background-color: #4CAF50;
+    color: white;
+    transition: all 0.3s ease;
+}
+
+.event-btn.primary:hover {
+    background-color: #45a049;
+    transform: translateY(-2px);
+}
+
+.event-btn.primary.participated {
+    background-color: #6c757d !important;
+    color: white !important;
+    cursor: not-allowed !important;
+    opacity: 0.8 !important;
+    pointer-events: none !important;
+    transform: none !important;
+}
+
+.event-btn.primary.participated:hover {
+    background-color: #6c757d !important;
+    transform: none !important;
+}
+
+.event-btn.approve {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.event-btn.approve:hover {
+    background-color: #45a049;
+    transform: translateY(-2px);
+}
+
+.event-btn.reject {
+    background-color: #f44336;
+    color: white;
+}
+
+.event-btn.reject:hover {
+    background-color: #d32f2f;
+    transform: translateY(-2px);
+}
+
+.event-status.pending_modification {
+    background-color: #FF9800;
+    color: white;
+} 

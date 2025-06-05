@@ -1,0 +1,888 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Campus Event</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* Styles pour la grille d'événements */
+        .events-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 25px;
+            padding: 20px;
+        }
+
+        /* Style pour chaque carte d'événement */
+        .event-card {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            transition: all 0.3s ease;
+            position: relative;
+            height: 500px;
+            display: flex;
+            flex-direction: column;
+            cursor: pointer;
+        }
+
+        .event-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Style pour l'image de l'événement */
+        .event-image {
+            width: 100%;
+            height: 300px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .event-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+            display: block;
+            transition: transform 0.3s ease;
+        }
+
+        .event-card:hover .event-image img {
+            transform: scale(1.05);
+        }
+
+        /* Style pour le contenu de l'événement */
+        .event-content {
+            padding: 20px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            background: white;
+        }
+
+        .event-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .club-logo {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #4CAF50;
+            margin-right: 10px;
+        }
+
+        .club-info {
+            flex-grow: 1;
+        }
+
+        .club-name {
+            font-size: 1rem;
+            color: #666;
+            margin-bottom: 2px;
+        }
+
+        .event-date {
+            font-size: 0.9rem;
+            color: #4CAF50;
+            font-weight: 500;
+        }
+
+        .event-title {
+            font-size: 1.4rem;
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: #333;
+            line-height: 1.4;
+        }
+
+        .event-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+            color: #666;
+            font-size: 1rem;
+        }
+
+        .event-info i {
+            color: #4CAF50;
+            width: 20px;
+        }
+
+        /* Style pour les badges de statut */
+        .status-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            color: white;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .status-badge.pending {
+            background-color: #FFA726;
+        }
+
+        .status-badge.approved {
+            background-color: #66BB6A;
+        }
+
+        .status-badge.rejected {
+            background-color: #EF5350;
+        }
+
+        /* Style pour les boutons d'action */
+        .event-actions {
+            display: flex;
+            gap: 12px;
+            margin-top: auto;
+            padding-top: 15px;
+            border-top: 1px solid #eee;
+        }
+
+        .nav-link {
+            text-decoration: none;
+            color: #333;
+            padding: 8px 16px;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            background-color: white;
+        }
+
+        .nav-link:hover {
+            background-color: #f5f5f5;
+        }
+
+        #createEventLink {
+            background-color: white;
+            color: #333;
+        }
+
+        #createEventLink:hover {
+            background-color: #f5f5f5;
+        }
+
+        .event-btn {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-weight: 500;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .event-btn.primary {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        .event-btn.secondary {
+            background-color: #f5f5f5;
+            color: #333;
+        }
+
+        .event-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Modal de détails */
+        .details-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            overflow-y: auto;
+        }
+
+        .details-modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .details-content {
+            background: white;
+            width: 90%;
+            max-width: 800px;
+            border-radius: 20px;
+            overflow: hidden;
+            position: relative;
+            margin: 40px auto;
+        }
+
+        .details-header {
+            position: relative;
+            height: 300px;
+        }
+
+        .details-header img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .details-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 30px;
+            background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
+            color: white;
+        }
+
+        .details-title {
+            font-size: 2rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .details-info {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .details-info-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1rem;
+        }
+
+        .details-body {
+            padding: 30px;
+        }
+
+        .details-section {
+            margin-bottom: 30px;
+        }
+
+        .details-section h3 {
+            font-size: 1.2rem;
+            color: #333;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .details-section p {
+            color: #666;
+            line-height: 1.6;
+            font-size: 1rem;
+        }
+
+        .details-actions {
+            padding: 20px 30px;
+            border-top: 1px solid #eee;
+            display: flex;
+            gap: 15px;
+            justify-content: flex-end;
+        }
+
+        .close-details {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.9);
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 1.2rem;
+            color: #333;
+            transition: all 0.3s ease;
+        }
+
+        .close-details:hover {
+            background: white;
+            transform: rotate(90deg);
+        }
+
+        /* Animation pour le modal */
+        @keyframes modalFadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .details-modal.active .details-content {
+            animation: modalFadeIn 0.3s ease-out;
+        }
+
+        .filters-section {
+            padding: 20px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin: 20px;
+        }
+
+        .filter-form {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .filter-group label {
+            font-weight: 500;
+            color: #333;
+        }
+
+        .filter-group select,
+        .filter-group input {
+            padding: 10px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 14px;
+            min-width: 200px;
+        }
+
+        .filter-btn {
+            padding: 10px 20px;
+            background-color: #2196F3;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .filter-btn:hover {
+            background-color: #1976D2;
+            transform: translateY(-2px);
+        }
+
+        @media (max-width: 768px) {
+            .filter-form {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .filter-group select,
+            .filter-group input {
+                width: 100%;
+            }
+        }
+
+        .section-title {
+            color: #333;
+            font-size: 24px;
+            margin: 30px 20px 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-title i {
+            color: #2196F3;
+        }
+
+        .my-participations-section {
+            margin-bottom: 40px;
+        }
+
+        .my-participations-section .event-card {
+            border: 2px solid #4CAF50;
+        }
+
+        .my-participations-section .event-card::before {
+            content: '✓';
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: #4CAF50;
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            z-index: 1;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-brand">Campus Event</div>
+        <div class="nav-links">
+            <a href="#" class="nav-link" id="createEventLink" style="background-color: white !important; color: #333 !important;">Créer un événement <i class="fas fa-plus"></i></a>
+            <a href="#" class="nav-link" id="becomeOrganizerLink" style="display: none;">Devenir organisateur</a>
+            <a href="#" class="nav-link" id="logoutLink">Déconnexion <i class="fas fa-door-open"></i></a>
+        </div>
+    </nav>
+
+    <main>
+        <section id="events" class="events-section">
+            <!-- Filtres -->
+            <div class="filters-section">
+                <form id="filterForm" class="filter-form" onsubmit="handleFilter(event)">
+                    <div class="filter-group">
+                        <label for="categoryFilter">Club :</label>
+                        <select id="categoryFilter" name="category">
+                            <option value="all">Tous les clubs</option>
+                            <option value="my_participations">Mes Participations</option>
+                            <optgroup label="Clubs">
+                                <option value="CIT">CIT</option>
+                                <option value="CAS">CAS</option>
+                                <option value="ENACTUS">ENACTUS</option>
+                                <option value="CESE">CESE</option>
+                                <option value="Sports">Comité Sports</option>
+                                <option value="Mosque">Comité Mosquée</option>
+                            </optgroup>
+                            <optgroup label="Groupes d'étude">
+                                <option value="SESNUM-INE1">SESNUM INE1</option>
+                                <option value="SESNUM-INE2">SESNUM INE2</option>
+                                <option value="SESNUM-INE3">SESNUM INE3</option>
+                                <option value="ASEDS-INE1">ASEDS INE1</option>
+                                <option value="ASEDS-INE2">ASEDS INE2</option>
+                                <option value="ASEDS-INE3">ASEDS INE3</option>
+                                <option value="SMART-INE1">SMART INE1</option>
+                                <option value="SMART-INE2">SMART INE2</option>
+                                <option value="SMART-INE3">SMART INE3</option>
+                                <option value="ICT-INE1">ICT INE1</option>
+                                <option value="ICT-INE2">ICT INE2</option>
+                                <option value="ICT-INE3">ICT INE3</option>
+                                <option value="ICCN-INE1">ICCN INE1</option>
+                                <option value="ICCN-INE2">ICCN INE2</option>
+                                <option value="ICCN-INE3">ICCN INE3</option>
+                                <option value="DATA-INE1">DATA INE1</option>
+                                <option value="DATA-INE2">DATA INE2</option>
+                                <option value="DATA-INE3">DATA INE3</option>
+                                <option value="AMOA-INE1">AMOA INE1</option>
+                                <option value="AMOA-INE2">AMOA INE2</option>
+                                <option value="AMOA-INE3">AMOA INE3</option>
+                                <option value="CLOUD-INE1">CLOUD INE1</option>
+                                <option value="CLOUD-INE2">CLOUD INE2</option>
+                                <option value="CLOUD-INE3">CLOUD INE3</option>
+                            </optgroup>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label for="dateFilter">Date :</label>
+                        <input type="date" id="dateFilter" name="date">
+                    </div>
+                    <button type="submit" class="filter-btn">
+                        <i class="fas fa-filter"></i> Filtrer
+                    </button>
+                </form>
+            </div>
+
+            <!-- Section Tous les Événements -->
+            <div class="all-events-section">
+                <h2 class="section-title">
+                    <i class="fas fa-calendar-alt"></i> Tous les Événements
+                </h2>
+                <div id="eventsContainer" class="events-grid">
+                    <!-- Les événements seront chargés ici dynamiquement -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Create Event Modal -->
+        <div id="createEventModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>Créer un nouvel événement</h2>
+                    <button class="close-button" onclick="hideModal(createEventModal)">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="createEventForm" class="event-form">
+                        <div class="form-group">
+                            <label for="title">
+                                <i class="fas fa-heading"></i> Titre
+                            </label>
+                            <input type="text" id="title" name="title" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="description">
+                                <i class="fas fa-align-left"></i> Description
+                            </label>
+                            <textarea id="description" name="description" required></textarea>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="date">
+                                    <i class="fas fa-calendar"></i> Date et heure
+                                </label>
+                                <input type="datetime-local" id="date" name="date" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="location">
+                                    <i class="fas fa-map-marker-alt"></i> Lieu
+                                </label>
+                                <select id="location" name="location" required>
+                                    <optgroup label="Salles de classe">
+                                        <option value="CC01">CC01</option>
+                                        <option value="CC02">CC02</option>
+                                        <option value="CC03">CC03</option>
+                                        <option value="CC04">CC04</option>
+                                        <option value="CC05">CC05</option>
+                                        <option value="CC06">CC06</option>
+                                    </optgroup>
+                                    <optgroup label="Salles B">
+                                        <option value="B100">B100</option>
+                                        <option value="B101">B101</option>
+                                        <option value="B102">B102</option>
+                                        <option value="B200">B200</option>
+                                        <option value="B201">B201</option>
+                                        <option value="B202">B202</option>
+                                    </optgroup>
+                                    <optgroup label="Amphithéâtres">
+                                        <option value="E1">E1</option>
+                                        <option value="E2">E2</option>
+                                        <option value="E3">E3</option>
+                                        <option value="Zlafa">Zlafa</option>
+                                    </optgroup>
+                                    <optgroup label="Terrains et Gradins">
+                                        <option value="Terrain Foot">Terrain de Football</option>
+                                        <option value="Terrain Basket">Terrain de Basket</option>
+                                        <option value="Terrain Volley">Terrain de Volley</option>
+                                        <option value="Gradins">Gradins</option>
+                                    </optgroup>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="expected_attendees">
+                                    <i class="fas fa-users"></i> Participants attendus
+                                </label>
+                                <input type="number" id="expected_attendees" name="expected_attendees" min="1" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="club_name">
+                                    <i class="fas fa-tags"></i> Catégorie
+                                </label>
+                                <select id="club_name" name="club_name" required>
+                                    <option value="">Sélectionner une catégorie</option>
+                                    <optgroup label="Clubs">
+                                        <option value="CIT">CIT</option>
+                                        <option value="CAS">CAS</option>
+                                        <option value="ENACTUS">ENACTUS</option>
+                                        <option value="CESE">CESE</option>
+                                        <option value="Sports">Comité Sports</option>
+                                        <option value="Mosque">Comité Mosquée</option>
+                                    </optgroup>
+                                    <optgroup label="Groupes d'étude">
+                                        <option value="SESNUM-INE1">SESNUM - INE1</option>
+                                        <option value="SESNUM-INE2">SESNUM - INE2</option>
+                                        <option value="SESNUM-INE3">SESNUM - INE3</option>
+                                        <option value="ASEDS-INE1">ASEDS - INE1</option>
+                                        <option value="ASEDS-INE2">ASEDS - INE2</option>
+                                        <option value="ASEDS-INE3">ASEDS - INE3</option>
+                                        <option value="SMART-INE1">SMART - INE1</option>
+                                        <option value="SMART-INE2">SMART - INE2</option>
+                                        <option value="SMART-INE3">SMART - INE3</option>
+                                        <option value="ICT-INE1">ICT - INE1</option>
+                                        <option value="ICT-INE2">ICT - INE2</option>
+                                        <option value="ICT-INE3">ICT - INE3</option>
+                                        <option value="ICCN-INE1">ICCN - INE1</option>
+                                        <option value="ICCN-INE2">ICCN - INE2</option>
+                                        <option value="ICCN-INE3">ICCN - INE3</option>
+                                        <option value="DATA-INE1">DATA - INE1</option>
+                                        <option value="DATA-INE2">DATA - INE2</option>
+                                        <option value="DATA-INE3">DATA - INE3</option>
+                                        <option value="AMOA-INE1">AMOA - INE1</option>
+                                        <option value="AMOA-INE2">AMOA - INE2</option>
+                                        <option value="AMOA-INE3">AMOA - INE3</option>
+                                        <option value="CLOUD-INE1">CLOUD - INE1</option>
+                                        <option value="CLOUD-INE2">CLOUD - INE2</option>
+                                        <option value="CLOUD-INE3">CLOUD - INE3</option>
+                                    </optgroup>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="form-actions">
+                            <button type="submit" class="submit-btn">
+                                <i class="fas fa-plus"></i> Créer l'événement
+                            </button>
+                            <button type="button" class="cancel-btn" onclick="hideModal(createEventModal)">
+                                <i class="fas fa-times"></i> Annuler
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Become Organizer Modal -->
+    <div id="becomeOrganizerModal" class="modal">
+        <div class="modal-content">
+            <h2>Devenir organisateur d'événements</h2>
+            <p>En tant qu'organisateur, vous pourrez créer et gérer vos propres événements tout en participant à d'autres événements.</p>
+            <form id="becomeOrganizerForm">
+                <div class="form-actions">
+                    <button type="submit">Confirmer</button>
+                    <button type="button" onclick="hideModal(becomeOrganizerModal)">Annuler</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Participate Modal -->
+    <div id="participateModal" class="modal">
+        <div class="modal-content">
+            <h2>Participer à l'événement</h2>
+            <form id="participateForm">
+                <input type="hidden" name="eventId">
+                <p>Êtes-vous sûr de vouloir participer à cet événement ?</p>
+                <div class="form-actions">
+                    <button type="submit">Confirmer</button>
+                    <button type="button" onclick="hideModal(participateModal)">Annuler</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Edit Event Modal -->
+    <div id="editEventModal" class="modal">
+        <div class="modal-content">
+            <h2>Modifier l'événement</h2>
+            <form id="editEventForm">
+                <input type="hidden" name="eventId">
+                <div class="form-group">
+                    <label for="editTitle">Titre de l'événement</label>
+                    <input type="text" id="editTitle" name="title" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="editDescription">Description</label>
+                    <textarea id="editDescription" name="description" required></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="editDate">Date</label>
+                    <input type="date" id="editDate" name="date" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="editTime">Heure</label>
+                    <input type="time" id="editTime" name="time" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="editLocation">Lieu</label>
+                    <select id="editLocation" name="location" required>
+                        <option value="">Sélectionner un lieu</option>
+                        <optgroup label="Salles de classe">
+                            <option value="CC01">CC01</option>
+                            <option value="CC02">CC02</option>
+                            <option value="CC03">CC03</option>
+                            <option value="CC04">CC04</option>
+                            <option value="CC05">CC05</option>
+                            <option value="CC06">CC06</option>
+                        </optgroup>
+                        <optgroup label="Salles B">
+                            <option value="B100">B100</option>
+                            <option value="B101">B101</option>
+                            <option value="B102">B102</option>
+                            <option value="B200">B200</option>
+                            <option value="B201">B201</option>
+                            <option value="B202">B202</option>
+                        </optgroup>
+                        <optgroup label="Amphithéâtres">
+                            <option value="E1">E1</option>
+                            <option value="E2">E2</option>
+                            <option value="E3">E3</option>
+                            <option value="Zlafa">Zlafa</option>
+                        </optgroup>
+                        <optgroup label="Terrains et Gradins">
+                            <option value="Terrain Foot">Terrain de Football</option>
+                            <option value="Terrain Basket">Terrain de Basket</option>
+                            <option value="Terrain Volley">Terrain de Volley</option>
+                            <option value="Gradins">Gradins</option>
+                        </optgroup>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="editExpectedAttendees">Nombre de participants attendus</label>
+                    <input type="number" id="editExpectedAttendees" name="expected_attendees" min="1" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="editClubName">Catégorie</label>
+                    <select id="editClubName" name="club_name" required>
+                        <option value="">Sélectionner une catégorie</option>
+                        <optgroup label="Clubs">
+                            <option value="CIT">CIT</option>
+                            <option value="CAS">CAS</option>
+                            <option value="ENACTUS">ENACTUS</option>
+                            <option value="CESE">CESE</option>
+                            <option value="Sports">Sports</option>
+                            <option value="Mosque">Mosque</option>
+                        </optgroup>
+                        <optgroup label="Groupes d'étude">
+                            <option value="SESNUM-INE1">SESNUM - INE1</option>
+                            <option value="SESNUM-INE2">SESNUM - INE2</option>
+                            <option value="SESNUM-INE3">SESNUM - INE3</option>
+                            <option value="ASEDS-INE1">ASEDS - INE1</option>
+                            <option value="ASEDS-INE2">ASEDS - INE2</option>
+                            <option value="ASEDS-INE3">ASEDS - INE3</option>
+                            <option value="SMART-INE1">SMART - INE1</option>
+                            <option value="SMART-INE2">SMART - INE2</option>
+                            <option value="SMART-INE3">SMART - INE3</option>
+                            <option value="ICT-INE1">ICT - INE1</option>
+                            <option value="ICT-INE2">ICT - INE2</option>
+                            <option value="ICT-INE3">ICT - INE3</option>
+                            <option value="ICCN-INE1">ICCN - INE1</option>
+                            <option value="ICCN-INE2">ICCN - INE2</option>
+                            <option value="ICCN-INE3">ICCN - INE3</option>
+                            <option value="DATA-INE1">DATA - INE1</option>
+                            <option value="DATA-INE2">DATA - INE2</option>
+                            <option value="DATA-INE3">DATA - INE3</option>
+                            <option value="AMOA-INE1">AMOA - INE1</option>
+                            <option value="AMOA-INE2">AMOA - INE2</option>
+                            <option value="AMOA-INE3">AMOA - INE3</option>
+                            <option value="CLOUD-INE1">CLOUD - INE1</option>
+                            <option value="CLOUD-INE2">CLOUD - INE2</option>
+                            <option value="CLOUD-INE3">CLOUD - INE3</option>
+                        </optgroup>
+                    </select>
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit">Enregistrer</button>
+                    <button type="button" onclick="hideModal(editEventModal)">Annuler</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal de détails -->
+    <div id="detailsModal" class="details-modal">
+        <div class="details-content">
+            <button class="close-details" onclick="hideModal(detailsModal)">×</button>
+            <div class="details-header">
+                <img id="detailsImage" src="" alt="Image de l'événement">
+                <div class="details-overlay">
+                    <h1 class="details-title" id="detailsTitle"></h1>
+                    <div class="details-info">
+                        <div class="details-info-item">
+                            <i class="fas fa-calendar"></i>
+                            <span id="detailsDate"></span>
+                        </div>
+                        <div class="details-info-item">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span id="detailsLocation"></span>
+                        </div>
+                        <div class="details-info-item">
+                            <i class="fas fa-users"></i>
+                            <span id="detailsAttendees"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="details-body">
+                <div class="details-section">
+                    <h3><i class="fas fa-building"></i> Organisateur</h3>
+                    <p id="detailsClub"></p>
+                </div>
+                <div class="details-section">
+                    <h3><i class="fas fa-info-circle"></i> Description</h3>
+                    <p id="detailsDescription"></p>
+                </div>
+            </div>
+            <div class="details-actions">
+                <button class="event-btn secondary" onclick="hideModal(detailsModal)">
+                    <i class="fas fa-times"></i> Fermer
+                </button>
+                <button class="event-btn primary" id="detailsParticipateBtn">
+                    <i class="fas fa-user-plus"></i> Participer
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Template pour la carte d'événement -->
+    <template id="event-card-template">
+        <div class="event-card">
+            <div class="event-image">
+                <img src="" alt="Event Image">
+            </div>
+            <div class="event-content">
+                <div class="event-header">
+                    <img class="club-logo" src="" alt="Club Logo">
+                    <div class="club-info">
+                        <div class="club-name"></div>
+                        <div class="event-date"></div>
+                    </div>
+                </div>
+                <h3 class="event-title"></h3>
+                <div class="event-info">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <span class="event-location"></span>
+                </div>
+                <div class="event-info">
+                    <i class="fas fa-users"></i>
+                    <span class="event-attendees"></span>
+                </div>
+                <div class="event-actions">
+                    <button class="event-btn secondary" onclick="showEventDetails(eventId)">
+                        <i class="fas fa-info-circle"></i> Détails
+                    </button>
+                    <button class="event-btn primary" onclick="handleEventAction(eventId, 'participate')">
+                        <i class="fas fa-user-plus"></i> Participer
+                    </button>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <script src="static/events.js"></script>
+</body>
+</html> 

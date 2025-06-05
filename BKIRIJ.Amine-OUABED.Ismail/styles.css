@@ -1,0 +1,519 @@
+/* Reset and base styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    line-height: 1.6;
+    background-color: #f0f2f5;
+}
+
+/* Navbar styles */
+.navbar {
+    background: linear-gradient(135deg, #1a237e, #0d47a1);
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: white;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.nav-brand {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1.8rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    background: linear-gradient(45deg, #ffffff, #e3f2fd);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+}
+
+.nav-links {
+    display: flex;
+    gap: 1.5rem;
+}
+
+.nav-link {
+    color: #1a237e;
+    text-decoration: none;
+    padding: 0.8rem 1.5rem;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+    margin-left: 1rem;
+    border: 3px solid #1a237e;
+    background-color: white;
+    display: inline-block;
+    font-weight: 500;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.nav-link:hover {
+    background-color: #1a237e;
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(26, 35, 126, 0.3);
+}
+
+.nav-link i {
+    margin-left: 0.5rem;
+    font-size: 1.1rem;
+    color: inherit;
+}
+
+/* Main content styles */
+main {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+}
+
+/* Filters section */
+.filters {
+    display: flex;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+    padding: 1.5rem;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    align-items: center;
+}
+
+.filter-group {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    position: relative;
+    flex: 1;
+}
+
+.filter-group i {
+    color: #007bff;
+    font-size: 1.2rem;
+    position: absolute;
+    left: 0.8rem;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+}
+
+.filter-group select,
+.filter-group input {
+    width: 100%;
+    padding: 0.8rem 0.8rem 0.8rem 2.5rem;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 1rem;
+    color: #333;
+    background-color: #f8f9fa;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.filter-group select:hover,
+.filter-group input:hover {
+    border-color: #007bff;
+    background-color: #fff;
+}
+
+.filter-group select:focus,
+.filter-group input:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 0 2px rgba(0,123,255,0.25);
+    background-color: #fff;
+}
+
+.filter-group select option {
+    padding: 0.5rem;
+}
+
+/* Events grid */
+.events-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 2rem;
+}
+
+.event-card {
+    background-color: white;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    transition: transform 0.3s;
+}
+
+.event-card:hover {
+    transform: translateY(-5px);
+}
+
+.event-card.new-event {
+    animation: slideIn 0.5s ease-out;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.event-image-container {
+    position: relative;
+    width: 100%;
+    height: 200px;
+    overflow: hidden;
+}
+
+.event-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s;
+}
+
+.event-card:hover .event-image {
+    transform: scale(1.05);
+}
+
+.event-club-badge {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background-color: #007bff;
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.event-content {
+    padding: 1.5rem;
+}
+
+.event-title {
+    font-size: 1.25rem;
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+}
+
+.event-details {
+    color: #666;
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+}
+
+.event-actions {
+    display: flex;
+    gap: 1rem;
+}
+
+/* Modal styles */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.5);
+    z-index: 1000;
+}
+
+.modal-content {
+    background-color: white;
+    max-width: 500px;
+    margin: 2rem auto;
+    padding: 1.5rem;
+    border-radius: 8px;
+    position: relative;
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+/* Form styles */
+.form-group {
+    margin-bottom: 1rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.25rem;
+    font-weight: 500;
+    font-size: 0.9rem;
+    color: #555;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 0.9rem;
+}
+
+.form-group textarea {
+    min-height: 80px;
+    resize: vertical;
+}
+
+/* Create Event Form specific styles */
+#createEventForm {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+#createEventForm .form-group:nth-child(1),
+#createEventForm .form-group:nth-child(2) {
+    grid-column: 1 / -1;
+}
+
+#createEventForm .form-group:nth-child(1) input,
+#createEventForm .form-group:nth-child(2) textarea {
+    font-size: 1rem;
+}
+
+#createEventForm .modal-actions {
+    grid-column: 1 / -1;
+    margin-top: 1rem;
+}
+
+/* Button styles */
+.primary-btn {
+    background-color: #1a237e;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+}
+
+.primary-btn:hover {
+    background-color: #0d47a1;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(26, 35, 126, 0.3);
+}
+
+.edit-btn {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: background-color 0.3s;
+}
+
+.edit-btn:hover {
+    background-color: #218838;
+}
+
+.delete-btn {
+    background-color: #e74c3c;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: background-color 0.3s;
+}
+
+.delete-btn:hover {
+    background-color: #c0392b;
+}
+
+.secondary-btn {
+    background-color: #e74c3c;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: background-color 0.3s;
+}
+
+.secondary-btn:hover {
+    background-color: #c0392b;
+}
+
+.modal-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: flex-end;
+    margin-top: 1rem;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .filters {
+        flex-direction: column;
+        gap: 1rem;
+    }
+    
+    .filter-group {
+        width: 100%;
+    }
+    
+    .modal-content {
+        margin: 1rem;
+        padding: 1rem;
+    }
+    
+    .events-grid {
+        grid-template-columns: 1fr;
+    }
+
+    #createEventForm {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Styles pour le calendrier */
+input[type="date"] {
+    position: relative;
+    cursor: pointer;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+    cursor: pointer;
+    opacity: 1;
+}
+
+/* Style pour le message d'erreur */
+.error-message {
+    color: #dc3545;
+    font-size: 0.875rem;
+    margin-top: 0.25rem;
+    display: none;
+}
+
+input:invalid + .error-message {
+    display: block;
+}
+
+/* Style pour le calendrier personnalisé */
+.calendar-container {
+    position: relative;
+}
+
+/* Style pour les dates réservées dans le calendrier */
+input[type="date"]:disabled {
+    background-color: #ffebee;
+    color: #dc3545;
+    cursor: not-allowed;
+}
+
+/* Style pour le calendrier quand une date est réservée */
+input[type="date"][data-reserved="true"] {
+    background-color: #ffebee;
+    color: #dc3545;
+}
+
+/* Styles pour le bouton Détails */
+.details-btn {
+    background-color: #1a237e;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+    margin-right: 0.5rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.details-btn:hover {
+    background-color: #0d47a1;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(26, 35, 126, 0.3);
+}
+
+/* Styles pour la modal de détails */
+.event-details-content {
+    margin: 1.5rem 0;
+}
+
+.event-info {
+    background-color: #f8f9fa;
+    padding: 1rem;
+    border-radius: 6px;
+    margin-bottom: 1.5rem;
+}
+
+.event-info p {
+    margin: 0.5rem 0;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.event-info i {
+    color: #007bff;
+    width: 20px;
+}
+
+.event-description {
+    background-color: white;
+    padding: 1rem;
+    border-radius: 6px;
+    border: 1px solid #dee2e6;
+}
+
+.event-description h3 {
+    color: #495057;
+    margin-bottom: 0.5rem;
+    font-size: 1.1rem;
+}
+
+.event-description p {
+    color: #6c757d;
+    line-height: 1.6;
+    white-space: pre-line;
+}
+
+/* Ajuster les styles de la modal pour les détails */
+#detailsModal .modal-content {
+    max-width: 600px;
+}
+
+#detailsModal h2 {
+    color: #007bff;
+    margin-bottom: 1rem;
+    font-size: 1.5rem;
+}
+
+/* Style pour le C personnalisé */
+.brand-c {
+    height: 2.5rem;
+    width: auto;
+    margin-right: 2px;
+    vertical-align: middle;
+    filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.2));
+    transition: transform 0.3s ease;
+}
+
+.brand-c:hover {
+    transform: scale(1.1);
+} 

@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Administration - Campus Events</title>
+    <link rel="stylesheet" href="static/styles.css">
+    <style>
+        .event-card {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            transition: all 0.3s ease;
+            position: relative;
+            height: 400px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .event-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .event-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-bottom: 1px solid #eee;
+        }
+
+        .event-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Style pour le contenu de l'événement */
+        .event-content {
+            padding: 20px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            background: white;
+        }
+
+        .event-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .club-logo {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #4CAF50;
+            margin-right: 10px;
+        }
+
+        .club-info {
+            flex-grow: 1;
+        }
+
+        .club-name {
+            font-size: 1rem;
+            color: #666;
+            margin-bottom: 2px;
+        }
+
+        .event-date {
+            font-size: 0.9rem;
+            color: #4CAF50;
+            font-weight: 500;
+        }
+
+        .event-title {
+            font-size: 1.4rem;
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: #333;
+            line-height: 1.4;
+        }
+
+        .event-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+            color: #666;
+            font-size: 1rem;
+        }
+
+        .event-info i {
+            color: #4CAF50;
+            width: 20px;
+        }
+
+        /* Style pour les boutons d'action */
+        .event-actions {
+            display: flex;
+            gap: 12px;
+            margin-top: auto;
+            padding-top: 15px;
+            border-top: 1px solid #eee;
+        }
+
+        .event-btn {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-weight: 500;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .event-btn.details {
+            background-color: #2196F3;
+            color: white;
+        }
+
+        .event-btn.approve {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        .event-btn.reject {
+            background-color: #f44336;
+            color: white;
+        }
+
+        .event-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Modal de détails */
+        .details-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            overflow-y: auto;
+        }
+
+        .details-modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .details-content {
+            background: white;
+            width: 90%;
+            max-width: 600px;
+            border-radius: 10px;
+            overflow: hidden;
+            position: relative;
+            margin: 40px auto;
+        }
+
+        .details-header {
+            background: #4CAF50;
+            padding: 20px;
+            color: white;
+        }
+
+        .details-title {
+            font-size: 1.8rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        .details-info {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .details-info-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1rem;
+        }
+
+        .details-body {
+            padding: 20px;
+        }
+
+        .details-section {
+            margin-bottom: 20px;
+        }
+
+        .details-section h3 {
+            font-size: 1.2rem;
+            color: #333;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .details-section p {
+            color: #666;
+            line-height: 1.6;
+            font-size: 1rem;
+        }
+
+        .details-actions {
+            padding: 15px 20px;
+            border-top: 1px solid #eee;
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .close-details {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: white;
+            border: none;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 1.2rem;
+            color: #333;
+        }
+
+        .btn {
+            padding: 8px 15px;
+            border: none;
+            border-radius: 5px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .btn.secondary {
+            background: #f5f5f5;
+            color: #333;
+            border: 1px solid #ddd;
+        }
+
+        /* Animation pour le modal */
+        @keyframes modalFadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .details-modal.active .details-content {
+            animation: modalFadeIn 0.4s ease-out;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="nav-brand">Campus Event</div>
+            <div class="nav-links">
+                <a href="#" class="nav-link" id="logoutLink">Déconnexion <i class="fas fa-door-open"></i></a>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <div class="container">
+            <h1>Administration des événements</h1>
+            <div id="eventsContainer" class="events-grid">
+                <!-- Les événements seront ajoutés ici dynamiquement -->
+            </div>
+        </div>
+    </main>
+
+    <!-- Modal de détails -->
+    <div id="detailsModal" class="details-modal">
+        <div class="details-content">
+            <button class="close-details" onclick="hideModal(this.parentElement.parentElement)">
+                <i class="fas fa-times"></i>
+            </button>
+            <div class="details-header">
+                <h2 id="detailsTitle" class="details-title"></h2>
+                <div class="details-info">
+                    <div class="details-info-item">
+                        <i class="fas fa-calendar"></i>
+                        <span id="detailsDate"></span>
+                    </div>
+                    <div class="details-info-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span id="detailsLocation"></span>
+                    </div>
+                    <div class="details-info-item">
+                        <i class="fas fa-users"></i>
+                        <span id="detailsAttendees"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="details-body">
+                <div class="details-section">
+                    <h3><i class="fas fa-building"></i> Club Organisateur</h3>
+                    <p id="detailsClub"></p>
+                </div>
+                <div class="details-section">
+                    <h3><i class="fas fa-info-circle"></i> Description</h3>
+                    <p id="detailsDescription"></p>
+                </div>
+            </div>
+            <div class="details-actions">
+                <button class="btn secondary" onclick="hideModal(this.parentElement.parentElement.parentElement)">
+                    <i class="fas fa-times"></i> Fermer
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Template pour la carte d'événement -->
+    <template id="event-card-template">
+        <div class="event-card">
+            <div class="event-image">
+                <img src="" alt="Event Image">
+            </div>
+            <div class="event-content">
+                <div class="event-header">
+                    <img class="club-logo" src="" alt="Club Logo">
+                    <div class="club-info">
+                        <div class="club-name"></div>
+                        <div class="event-date"></div>
+                    </div>
+                </div>
+                <h3 class="event-title"></h3>
+                <div class="event-info">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <span class="event-location"></span>
+                </div>
+                <div class="event-info">
+                    <i class="fas fa-users"></i>
+                    <span class="event-attendees"></span>
+                </div>
+                <div class="event-actions">
+                    <button class="event-btn details" onclick="showEventDetails(eventId)">
+                        <i class="fas fa-info-circle"></i> Détails
+                    </button>
+                    <button class="event-btn approve" onclick="handleEventAction(eventId, 'approve')">
+                        <i class="fas fa-check"></i> Approuver
+                    </button>
+                    <button class="event-btn reject" onclick="handleEventAction(eventId, 'reject')">
+                        <i class="fas fa-times"></i> Rejeter
+                    </button>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <script src="static/admin.js"></script>
+    <script>
+        document.getElementById('logoutLink').addEventListener('click', function(e) {
+            e.preventDefault();
+            localStorage.removeItem('access_token');
+            localStorage.removeItem('user');
+            window.location.href = '/auth.html';
+        });
+    </script>
+</body>
+</html> 
